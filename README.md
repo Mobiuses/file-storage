@@ -24,13 +24,13 @@ This command will:
 
 ```bash
 # 1. Create .env file
-copy .env.example .env
+cp .env.example .env
 
 # 2. Install PHP dependencies
-docker-compose run --rm composer install
+docker-compose run --rm php composer install
 
 # 3. Generate APP_KEY
-docker-compose run --rm composer php artisan key:generate
+docker-compose run --rm php php artisan key:generate
 
 # 4. Install Node.js dependencies
 docker-compose run --rm node npm install

@@ -9,11 +9,11 @@ help: ## Show this help message
 setup: ## Full project setup from scratch (install dependencies, build, migrate)
 	@echo "🚀 Starting project setup..."
 	@echo "📝 Creating .env file from .env.example..."
-	@if not exist .env copy .env.example .env
+	@test -f .env || cp .env.example .env
 	@echo "📦 Installing PHP dependencies..."
-	docker-compose run --rm composer install
+	docker-compose run --rm php composer install
 	@echo "🔑 Generating application key..."
-	docker-compose run --rm composer php artisan key:generate
+	docker-compose run --rm php php artisan key:generate
 	@echo "📦 Installing Node.js dependencies..."
 	docker-compose run --rm node npm install
 	@echo "🏗️  Building frontend for production..."
@@ -21,7 +21,7 @@ setup: ## Full project setup from scratch (install dependencies, build, migrate)
 	@echo "🐳 Starting Docker containers..."
 	docker-compose up -d
 	@echo "⏳ Waiting for MySQL to be ready..."
-	@timeout /t 10 /nobreak > nul
+	@sleep 10
 	@echo "🗄️  Running database migrations..."
 	docker exec file_storage_php php artisan migrate --force
 	@echo "✅ Project setup complete!"
@@ -31,7 +31,7 @@ setup: ## Full project setup from scratch (install dependencies, build, migrate)
 
 install: ## Install dependencies only
 	@echo "📦 Installing dependencies..."
-	docker-compose run --rm composer install
+	docker-compose run --rm php composer install
 	docker-compose run --rm node npm install
 
 build: ## Build frontend assets
