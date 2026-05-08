@@ -2,6 +2,13 @@
 
 Web application for storing PDF and DOCX files with automatic deletion after 24 hours.
 
+## Tested docker build setup on
+
+| OS | Status |
+|---|---|
+| Windows 10 | ✅ |
+| Ubuntu 22.04 LTS | ✅ |
+| macOS | ❓ |
 ## Quick Start
 
 ### Using Make (recommended)
