@@ -58,6 +58,15 @@ docker exec file_storage_php php artisan migrate
 - **API**: http://localhost:8080/api/files
 - **RabbitMQ Management UI**: http://localhost:15672 (admin/admin123)
 
+### Troubleshooting
+
+**Permission denied error on Linux/Ubuntu:**
+If you see "Permission denied" errors for storage/logs, run:
+```bash
+docker exec file_storage_php chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+docker exec file_storage_php chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+```
+
 ## Running Services
 
 Docker Compose starts the following containers:

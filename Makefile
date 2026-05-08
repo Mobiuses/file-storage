@@ -19,9 +19,12 @@ setup: ## Full project setup from scratch (install dependencies, build, migrate)
 	@echo "🏗️  Building frontend for production..."
 	docker-compose run --rm node npm run build
 	@echo "🐳 Starting Docker containers..."
-	docker-compose up -d
+	docker-compose up -d --build
 	@echo "⏳ Waiting for MySQL to be ready..."
 	@sleep 10
+	@echo "🔐 Setting storage permissions..."
+	docker exec file_storage_php chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+	docker exec file_storage_php chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 	@echo "🗄️  Running database migrations..."
 	docker exec file_storage_php php artisan migrate --force
 	@echo "✅ Project setup complete!"
