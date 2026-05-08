@@ -31,6 +31,7 @@ class FileService implements FileServiceInterface
             'size' => $dto->size,
             'path' => $path,
             'expires_at' => now()->addHours(config('filesystems.file_expiration_hours'))
+//            'expires_at' => now()->addMinute() // Uncomment for testing purpose
         ];
 
         $file = $this->repository->create($fileData);

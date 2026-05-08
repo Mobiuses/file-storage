@@ -2,7 +2,7 @@
 
 Web application for storing PDF and DOCX files with automatic deletion after 24 hours.
 
-## Tested docker build setup on
+## Tested docker build setup on different OS
 
 | OS | Status |
 |---|---|
