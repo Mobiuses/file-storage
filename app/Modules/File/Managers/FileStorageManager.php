@@ -15,9 +15,8 @@ class FileStorageManager
     public function store(UploadedFile $file): string
     {
         $storedName = $this->generateUniqueName($file->getClientOriginalName());
-        $path = $file->storeAs(self::FILES_DIRECTORY, $storedName, self::STORAGE_DISK);
 
-        return $path;
+        return $file->storeAs(self::FILES_DIRECTORY, $storedName, self::STORAGE_DISK);
     }
 
     public function delete(string $path): bool

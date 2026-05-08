@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Log;
 class FileService implements FileServiceInterface
 {
     public function __construct(
-        protected FileRepositoryInterface $repository,
-        protected FileStorageManager $storageManager
+        protected readonly FileRepositoryInterface $repository,
+        protected readonly FileStorageManager $storageManager
     ) {}
 
     public function uploadFile(FileUploadDTO $dto): FileDTO

@@ -10,13 +10,14 @@ use App\Modules\File\Managers\FileStorageManager;
 use App\Modules\File\Repositories\FileRepositoryInterface;
 use App\Modules\File\Services\FileServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class FileController extends Controller
 {
     public function __construct(
-        protected FileServiceInterface $fileService,
-        protected FileRepositoryInterface $repository,
-        protected FileStorageManager $storageManager
+        protected readonly FileServiceInterface $fileService,
+        protected readonly FileRepositoryInterface $repository,
+        protected readonly FileStorageManager $storageManager
     ) {}
 
     public function index(): JsonResponse
@@ -25,7 +26,7 @@ class FileController extends Controller
             $files = $this->fileService->getAllFiles();
             return response()->json($files);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -36,9 +37,9 @@ class FileController extends Controller
             $dto = FileUploadDTO::fromUploadedFile($uploadedFile);
             $fileDTO = $this->fileService->uploadFile($dto);
 
-            return response()->json($fileDTO->toArray(), 201);
+            return response()->json($fileDTO->toArray(), Response::HTTP_CREATED);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -48,12 +49,12 @@ class FileController extends Controller
             $file = $this->fileService->getFileById($id);
 
             if (!$file) {
-                return response()->json(['error' => 'File not found'], 404);
+                return response()->json(['error' => 'File not found'], Response::HTTP_NOT_FOUND);
             }
 
             return response()->json($file->toArray());
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -63,16 +64,16 @@ class FileController extends Controller
             $file = $this->repository->find($id);
 
             if (!$file) {
-                return response()->json(['error' => 'File not found'], 404);
+                return response()->json(['error' => 'File not found'], Response::HTTP_NOT_FOUND);
             }
 
             if (!$this->storageManager->exists($file->path)) {
-                return response()->json(['error' => 'File not found in storage'], 404);
+                return response()->json(['error' => 'File not found in storage'], Response::HTTP_NOT_FOUND);
             }
 
             return $this->storageManager->download($file->path, $file->original_name);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,12 +83,12 @@ class FileController extends Controller
             $success = $this->fileService->deleteFile($id);
 
             if (!$success) {
-                return response()->json(['error' => 'File not found'], 404);
+                return response()->json(['error' => 'File not found'], Response::HTTP_NOT_FOUND);
             }
 
             return response()->json(['message' => 'File deleted successfully']);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

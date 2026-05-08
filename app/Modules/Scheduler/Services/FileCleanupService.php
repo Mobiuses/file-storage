@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Log;
 class FileCleanupService implements SchedulerServiceInterface
 {
     public function __construct(
-        protected FileRepositoryInterface $fileRepository,
-        protected FileStorageManager $storageManager
+        protected readonly FileRepositoryInterface $fileRepository,
+        protected readonly FileStorageManager $storageManager
     ) {}
 
     public function deleteExpiredFiles(): int

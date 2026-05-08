@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Modules\Notification\Services;
 
 use App\Modules\Notification\DTO\NotificationDTO;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Exception;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class RabbitMQNotificationService implements NotificationServiceInterface
 {
     private AMQPStreamConnection $connection;
-    private $channel;
+    private AMQPChannel $channel;
     private string $queueName;
 
     public function __construct()

@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -16,7 +17,7 @@ class ConsumeNotificationsCommand extends Command
     protected $description = 'Consume file notifications from RabbitMQ';
 
     private AMQPStreamConnection $connection;
-    private $channel;
+    private AMQPChannel $channel;
     private string $queueName;
 
     public function __construct()
@@ -31,9 +32,11 @@ class ConsumeNotificationsCommand extends Command
             $this->info('Starting RabbitMQ consumer for file notifications...');
             $this->connect();
             $this->consume();
+
             return 0;
         } catch (\Exception $e) {
             $this->error('Consumer error: ' . $e->getMessage());
+
             return 1;
         }
     }
@@ -160,8 +163,8 @@ class ConsumeNotificationsCommand extends Command
 
     private function logFailedJob(string $payload, \Exception $exception): void
     {
-        \DB::table('failed_jobs')->insert([
-            'uuid' => \Str::uuid()->toString(),
+        DB::table('failed_jobs')->insert([
+            'uuid' => Str::uuid()->toString(),
             'connection' => 'rabbitmq',
             'queue' => $this->queueName,
             'payload' => $payload,

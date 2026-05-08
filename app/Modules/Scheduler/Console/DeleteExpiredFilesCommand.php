@@ -12,7 +12,7 @@ class DeleteExpiredFilesCommand extends Command
     protected $description = 'Delete expired files (older than 24 hours)';
 
     public function __construct(
-        protected SchedulerServiceInterface $schedulerService
+        protected readonly SchedulerServiceInterface $schedulerService
     ) {
         parent::__construct();
     }
@@ -33,6 +33,7 @@ class DeleteExpiredFilesCommand extends Command
             return 0;
         } catch (\Exception $e) {
             $this->error('Error during cleanup: ' . $e->getMessage());
+
             return 1;
         }
     }

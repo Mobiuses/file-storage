@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class SendFileDeletionNotification
 {
     public function __construct(
-        protected NotificationServiceInterface $notificationService
+        protected readonly NotificationServiceInterface $notificationService
     ) {}
 
     public function handle(FileDeleted $event): void

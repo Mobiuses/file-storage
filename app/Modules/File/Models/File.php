@@ -25,7 +25,7 @@ class File extends Model
         'expires_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'size' => 'integer'
+        'size'       => 'integer'
     ];
 
     public $incrementing = false;

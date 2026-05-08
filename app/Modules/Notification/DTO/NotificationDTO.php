@@ -25,9 +25,9 @@ class NotificationDTO
     public function toArray(): array
     {
         return [
-            'action' => $this->action,
-            'file' => $this->fileData,
-            'email' => $this->email,
+            'action'    => $this->action,
+            'file'      => $this->fileData,
+            'email'     => $this->email,
             'timestamp' => $this->timestamp
         ];
     }
